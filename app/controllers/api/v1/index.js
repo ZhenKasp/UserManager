@@ -1,8 +1,16 @@
 const User = require('../../../models/User.js')
 
-index = (app, connection) => {
+index = (app) => {
+
   app.get('/api/v1/', (req,res) => {
-    res.json({ message: "Hello" }); 
+    
+    User.findAll().then((users => {
+      console.log("All users:", JSON.stringify(users, null, 2));
+      res.json({ 
+        message: "Hello",
+        users: users
+       }); 
+    }))
   });     
 }
 

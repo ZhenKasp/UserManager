@@ -1,11 +1,12 @@
 const createError = require('http-errors');
 const express = require('express');
+const cors = require('cors');
+const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mysql = require('mysql');
 const passport = require('./app/passport/passport');
-const app = express();
 
 require('dotenv').config();
 require('./app/models/sequelize.js');
@@ -27,6 +28,7 @@ connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
   console.log('The solution is: ', rows[0].solution);
 });
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
