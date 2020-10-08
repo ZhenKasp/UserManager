@@ -36,8 +36,9 @@ app.use(cookieParser());
 
 passport(app);
 
-require('./app/controllers/api/v1/index.js')(app, connection);
-
+require('./app/controllers/api/v1/index.js')(app);
+require('./app/controllers/api/v1/signin.js')(app);
+require('./app/controllers/api/v1/signup.js')(app);
 app.use((req, res, next) => {
   next(createError(404));
 });

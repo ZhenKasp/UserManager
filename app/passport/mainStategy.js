@@ -12,18 +12,20 @@ module.exports = () => {
   (username, password, done) => {
     User.findOne({ where: { email: username } })
     .then((user) => {
-      if (!user) return done(null, false); 
-      bcrypt.compare(password, user.password, (bcryptErr, verified) => {      
+      if (!user) {
+        return done(null, false); 
+      }
+      bcrypt.compare(password, user.password, (bcryptErr, verified) => { 
         if (verified) {
-            return done(null, user);
+          return done(null, user);
         } else {
-            return done(null, false);
+          return done(null, false);
         }
       });  
     })
     .catch((err) => {   
-        done(err);
+      console.log(err);
+      done(err);
     });
-  }
-  ));
+  }));
 }
