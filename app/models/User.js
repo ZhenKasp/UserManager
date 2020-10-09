@@ -1,5 +1,6 @@
 const sequelize = require('./sequelize.js')
 const { DataTypes } = require('sequelize');
+const isUnique = require('../utilities/isUnique');
 
 const User = sequelize.define('user', {
   username:{
@@ -16,14 +17,11 @@ const User = sequelize.define('user', {
   },
   email:{
     type: DataTypes.STRING,
-    unique: {
-      args: true,
-      msg: 'User with email already exists.'
-    },
     validate: {
       isEmail: {
         msg: 'Invalid Email.'
-      }
+      },
+      isUnique: isUnique("User", "email")
     }
   },
   password:{

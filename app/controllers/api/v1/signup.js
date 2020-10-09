@@ -21,12 +21,10 @@ signup = (app) => {
         });
         await newUser.save();
         req.login(newUser, (err) => {
-          if (err) { console.log(err) }
           res.json({ success: true });
         });
-      } catch (e) {
-        console.error(e);
-        res.json({ success: false, msg: e.errors[0].message }) 
+      } catch (error) {
+        res.json({ success: false, error: error.errors[0].message }) 
       }  
     })();
   }); 

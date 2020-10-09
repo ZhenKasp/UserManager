@@ -13,13 +13,13 @@ module.exports = () => {
     User.findOne({ where: { email: username } })
     .then((user) => {
       if (!user) {
-        return done(null, false); 
+        return done(null, {error : "Incorrect mail or password"}); 
       }
       bcrypt.compare(password, user.password, (bcryptErr, verified) => { 
         if (verified) {
           return done(null, user);
         } else {
-          return done(null, false);
+          return done(null, {error : "Incorrect mail or password"});
         }
       });  
     })
