@@ -1,11 +1,13 @@
 const createError = require('http-errors');
 const express = require('express');
+const logger = require('morgan');
+const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const cors = require('cors');
 const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mysql = require('mysql');
 const passport = require('./app/passport/passport');
 
 require('dotenv').config();
@@ -32,24 +34,26 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser());  
+
+const sessionStore = new MySQLStore({}, connection); 
+
+app.use(session({
+  key: process.env.CKEY,
+  secret: process.env.CSECRET,
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      maxAge: (1825 * 86400 * 1000),
+      secure: true
+  }
+}));
 
 passport(app);
 
 require('./app/controllers/api/v1/index.js')(app);
 require('./app/controllers/api/v1/signin.js')(app);
 require('./app/controllers/api/v1/signup.js')(app);
-app.use((req, res, next) => {
-  next(createError(404));
-});
-
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.json({ error: err.status })
-});
-
-connection.end();
 
 module.exports = app;
