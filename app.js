@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
 const mysql = require('mysql');
@@ -20,7 +19,7 @@ const connection = mysql.createConnection({
   database: process.env.DATABASE
 });
 
-connection.connect((err)=> {
+connection.connect((err) => {
   if(err) throw err;
   console.log("DB Connected Successfully");
 });
@@ -30,14 +29,22 @@ connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
   console.log('The solution is: ', rows[0].solution);
 });
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials : true
+ }));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
 
-const sessionStore = new MySQLStore({}, connection); 
+const sessionStore = new MySQLStore({
+  expiration: (1825 * 86400 * 1000),
+  endConnectionOnClose: false
+}, connection); 
 
+passport(app);
 app.use(session({
   key: process.env.CKEY,
   secret: process.env.CSECRET,
@@ -50,10 +57,8 @@ app.use(session({
   }
 }));
 
-passport(app);
-
 require('./app/controllers/api/v1/index.js')(app);
 require('./app/controllers/api/v1/signin.js')(app);
 require('./app/controllers/api/v1/signup.js')(app);
-
+require('./app/controllers/api/v1/logout.js')(app);
 module.exports = app;

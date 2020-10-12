@@ -1,6 +1,5 @@
 const passport = require('passport');
 
-
 const mainStrategy = require('./mainStategy');
 
 module.exports = (app) => {

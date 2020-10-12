@@ -1,4 +1,3 @@
-const User = require('../../../models/User');
 const passport = require('passport');
 
 signin = (app) => {
@@ -6,9 +5,10 @@ signin = (app) => {
     passport.authenticate('local'),
     (req, res) => {
       if (req.session.passport.user.error) {
-        return res.json({ error: req.session.passport.user.error })
+        return res.json({ error: req.session.passport.user.error });
       } else {
-        return res.json({ username: req.session.passport.user.username })
+
+        return res.json({ username: req.session.passport.user.username });
       }
     }
   ); 
