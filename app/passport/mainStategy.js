@@ -17,6 +17,9 @@ module.exports = () => {
       }
       bcrypt.compare(password, user.password, (bcryptErr, verified) => { 
         if (verified) {
+          user.lastSignInAt = new Date();
+          user.save();
+
           return done(null, user);
         } else {
           return done(null, {error : "Incorrect mail or password"});

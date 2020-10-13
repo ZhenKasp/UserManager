@@ -25,12 +25,15 @@ const User = sequelize.define('user', {
     }
   },
   password:{
-  type: DataTypes.STRING
+    type: DataTypes.STRING
   },
   status: {
-  type: DataTypes.STRING,
-  defaultValue: 'active'
+    type: DataTypes.STRING,
+    defaultValue: 'active'
   },
+  lastSignInAt: {
+    type: DataTypes.DATE
+  }
 }, { 
   timestamps: true,
   createdAt: true,

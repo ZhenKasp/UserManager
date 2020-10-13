@@ -12,12 +12,15 @@ signup = (app) => {
     
     (async () => {
       try {
+        const date = new Date();
+
         const newUser = await User.create({
           email: email,
           username: username,
           firstname: firstname,
           lastname: lastname,
-          password: hashPass
+          password: hashPass,
+          lastSignInAt: date
         });
         await newUser.save();
         req.login(newUser, (err) => {
