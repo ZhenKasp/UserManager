@@ -5,10 +5,9 @@ signin = (app) => {
     passport.authenticate('local'),
     (req, res) => {
       if (req.session.passport.user.error) {
-        return res.json({ error: req.session.passport.user.error });
+        res.json({ error: req.session.passport.user.error });
       } else {
-
-        return res.json({ username: req.session.passport.user.username });
+        res.json({ username: req.session.passport.user.username });
       }
     }
   ); 

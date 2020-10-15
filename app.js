@@ -57,8 +57,5 @@ app.use(session({
   }
 }));
 
-require('./app/controllers/api/v1/index.js')(app);
-require('./app/controllers/api/v1/signin.js')(app);
-require('./app/controllers/api/v1/signup.js')(app);
-require('./app/controllers/api/v1/logout.js')(app);
+require('./app/controllers/api/v1/routes.js')(app);
 module.exports = app;
