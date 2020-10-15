@@ -5,20 +5,24 @@ deleteUsers = (app) => {
     
     if (req.query) {
       let usersID = req.query.id.split(";");
-      console.log(usersID);
-      usersID.map(userID => {
+      try {
         User.destroy({
-          where: {id: userID}
-        })
-      }).then(
-        User.findAll().then(
-          (users) => {
-            res.json({ 
-              users: users
-            }); 
-          }
-        )
-      )
+          where: {id: usersID}
+        }).then(
+          setTimeout(() => {
+            User.findAll().then(
+              (users) => { 
+                res.json({ 
+                  users: users
+                }); 
+              }
+            )
+          }, 1000)
+        );
+      } catch (error) {
+        console.log(error);
+        res.json({ error: { message: "Samething went wrong on delete action" , data: error }});
+      }
     }
   }); 
 }
