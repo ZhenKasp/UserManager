@@ -12,7 +12,8 @@ deleteUsers = (app) => {
           setTimeout(() => {
             User.findAll().then(
               (users) => { 
-                res.json({ 
+                res.json({
+                  message: "Delete successful",
                   users: users
                 }); 
               }

@@ -24,10 +24,10 @@ signup = (app) => {
         });
         await newUser.save();
         req.login(newUser, (err) => {
-          res.json({ success: true, username: newUser.username});
+          res.json({ success: true, username: newUser.username, message: "Registration successful" , variant: "success"});
         });
       } catch (error) {
-        res.json({ success: false, error: error.errors[0].message }) 
+        res.json({ success: false, error: error.errors[0].message, variant: "danger"}) 
       }  
     })();
   }); 
