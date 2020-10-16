@@ -2,12 +2,11 @@ const User = require('../../../models/User');
 
 deleteUsers = (app) => {
   app.delete('/api/v1/delete', (req, res) => { 
-    
     if (req.query) {
-      let usersID = req.query.id.split(";");
+      let userIDs = req.query.id.split(";");
       try {
         User.destroy({
-          where: {id: usersID}
+          where: {id: userIDs}
         }).then(
           setTimeout(() => {
             User.findAll().then(

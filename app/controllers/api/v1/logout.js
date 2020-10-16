@@ -1,6 +1,9 @@
 const logout = (app) => {
   app.delete('/api/v1/logout', (req, res) => {
-    if (req.session.passport) {
+
+    console.log(req)
+    if (req.session) {
+      req.logout();
       req.session.destroy();
         console.log("session destroy");
         res.json({ success: true, view: 'login', message: "Logout successful" , variant: "success"});
