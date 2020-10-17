@@ -1,8 +1,10 @@
 const User = require('../../../models/User');
+const authenticateToken = require('../../../midlware/authenticateToken');
 
 deleteUsers = (app) => {
-  app.delete('/api/v1/delete', (req, res) => { 
+  app.delete('/api/v1/delete', authenticateToken, (req, res) => { 
     if (req.query) {
+      console.log(req.query)
       let userIDs = req.query.id.split(";");
       try {
         User.destroy({
@@ -12,7 +14,7 @@ deleteUsers = (app) => {
             User.findAll().then(
               (users) => { 
                 res.json({
-                  message: "Delete successful",
+                  message: "Delete successful.",
                   users: users
                 }); 
               }

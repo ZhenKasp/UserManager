@@ -1,16 +1,8 @@
-const logout = (app) => {
-  app.delete('/api/v1/logout', (req, res) => {
+const authenticateToken = require('../../../midlware/authenticateToken');
 
-    console.log(req)
-    if (req.session) {
-      req.logout();
-      req.session.destroy();
-        console.log("session destroy");
-        res.json({ success: true, view: 'login', message: "Logout successful" , variant: "success"});
-    } else {
-        console.log("dont destroy");
-        res.json({ success: false, message: "Something goes wrong" , variant: "danger"});
-    } 
+logout = (app) => {
+  app.delete('/api/v1/logout', authenticateToken, (req, res) => {
+    res.json({ success: true, view: 'login', message: "Logout successful." , variant: "success"});
   });
 }
 

@@ -1,13 +1,9 @@
 const express = require('express');
 const logger = require('morgan');
 const mysql = require('mysql');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const cors = require('cors');
 const app = express();
-const path = require('path');
 const cookieParser = require('cookie-parser');
-const passport = require('./app/passport/passport');
 
 require('dotenv').config();
 require('./app/models/sequelize.js');
@@ -38,24 +34,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
-
-const sessionStore = new MySQLStore({
-  expiration: (1825 * 86400 * 1000),
-  endConnectionOnClose: false
-}, connection); 
-
-passport(app);
-app.use(session({
-  key: process.env.CKEY,
-  secret: process.env.CSECRET,
-  store: sessionStore,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: (1825 * 86400 * 1000),
-    secure: false
-  }
-}));
 
 require('./app/controllers/api/v1/routes.js')(app);
 module.exports = app;

@@ -1,19 +1,19 @@
 const User = require('../../../models/User');
+const generateAccessToken = require('../../../midlware/generateAccessToken')
 
 signup = (app) => {
   app.post('/api/v1/signup', (req,res) => {
-    const email = req.body.email.toLowerCase();
-    const username = req.body.username;
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
-    const password = req.body.password;
-
+    const email = req.body.email.toLowerCase(),
+      username = req.body.username,
+      firstname = req.body.firstname,
+      lastname = req.body.lastname,
+      password = req.body.password
+      
     const hashPass = require('bcryptjs').hashSync(password, 9);
     
     (async () => {
       try {
         const date = new Date();
-
         const newUser = await User.create({
           email: email,
           username: username,
@@ -23,11 +23,12 @@ signup = (app) => {
           lastSignInAt: date
         });
         await newUser.save();
-        req.login(newUser, (err) => {
-          res.json({ success: true, username: newUser.username, message: "Registration successful" , variant: "success"});
-        });
+        const token = generateAccessToken({ email: email });
+
+        res.json({ success: true, token: token, message: "Registration successful." , variant: "success"});
       } catch (error) {
-        res.json({ success: false, error: error.errors[0].message, variant: "danger"}) 
+        console.log(error)
+        res.json({ success: false, error: error.errors[0].message, variant: "danger"}).status(400); 
       }  
     })();
   }); 
