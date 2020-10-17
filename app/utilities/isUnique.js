@@ -8,8 +8,8 @@ isUnique = (modelName, field) => {
       .then((object) => {
         if (object) return next(modelName + ' with this '+ field +' already exists.');
         next();
-      })
-  }
-}
+      });
+  };
+};
 
 module.exports = isUnique;

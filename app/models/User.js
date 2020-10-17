@@ -1,4 +1,4 @@
-const sequelize = require('./sequelize.js')
+const sequelize = require('./sequelize.js');
 const { DataTypes } = require('sequelize');
 const isUnique = require('../utilities/isUnique');
 

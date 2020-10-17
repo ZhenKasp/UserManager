@@ -7,11 +7,16 @@ authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
     if (error) {
-      return res.json({ error: error.message, variant: "danger"}).sendStatus(403); 
-    }
-    req.user = user;
+      return res.json({ 
+        token: "", 
+        error: error.message, 
+        variant: "danger"
+      }).sendStatus(403); 
+    };
+    req.body.email = user.email;
+    req.body.token = token;
     next();
-  })
+  });
 }
 
 module.exports = authenticateToken;

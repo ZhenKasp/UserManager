@@ -1,5 +1,5 @@
 const User = require('../../../models/User');
-const generateAccessToken = require('../../../midlware/generateAccessToken')
+const generateAccessToken = require('../../../midlware/generateAccessToken');
 
 signup = (app) => {
   app.post('/api/v1/signup', (req,res) => {
@@ -23,15 +23,14 @@ signup = (app) => {
           lastSignInAt: date
         });
         await newUser.save();
-        const token = generateAccessToken({ email: email });
+        const token = generateAccessToken(email);
 
-        res.json({ success: true, token: token, message: "Registration successful." , variant: "success"});
+        res.json({ token: token, message: "Registration successful." , variant: "success"});
       } catch (error) {
-        console.log(error)
-        res.json({ success: false, error: error.errors[0].message, variant: "danger"}).status(400); 
+        res.json({ error: error.errors[0].message, variant: "danger"}).status(400); 
       }  
     })();
   }); 
-}
+};
 
 module.exports = signup;

@@ -35,5 +35,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
 
-require('./app/controllers/api/v1/routes.js')(app);
+require('./routes')(app);
 module.exports = app;

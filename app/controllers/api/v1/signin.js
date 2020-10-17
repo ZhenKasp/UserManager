@@ -1,9 +1,10 @@
 const generateAccessToken = require('../../../midlware/generateAccessToken');
 const User = require('../../../models/User');
 const bcrypt = require('bcryptjs');
+const checkUserExistsAndActive = require('../../../utilities/checkUserExistsAndActive');
 
 signin = (app) => {
-  app.post('/api/v1/signin', (req, res) => {
+  app.post('/api/v1/signin', checkUserExistsAndActive, (req, res) => {
     const email = req.body.email.toLowerCase();
     const password = req.body.password;
     (async () => {
@@ -11,7 +12,6 @@ signin = (app) => {
         await User.findOne({ where: {email: email} })
           .then(user => {
             if (!user) return res.json({ 
-              success: false, 
               error: "User doesn't exist.", 
               variant: "danger" 
             }).status(400);
@@ -24,19 +24,21 @@ signin = (app) => {
                   variant: "success" 
                 });  
               } else {
-                return res.json({ success: false, 
+                return res.json({ 
                   error: "Invalid password.", 
                   variant: "danger" 
                 }).status(401);
-              }
-            })
-          })
+              };
+            });
+          });
       } catch (error) {
-        console.log(error)
-        res.json({ success: false, error: error.errors[0].message, variant: "danger"}) 
-      }  
+        res.json({  
+          error: error.errors[0].message, 
+          variant: "danger"
+        }) 
+      };  
     })();
   }); 
-}
+};
 
 module.exports = signin;
