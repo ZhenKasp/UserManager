@@ -10,7 +10,7 @@ checkUserExistsAndActive = (req, res, next) => {
           next(); 
         } else {
           return res.json({ 
-            error: "User don't exist or deleted.", 
+            error: "User doesn't exist or blocked.", 
             token: "",
             variant: "danger" 
           }).status(403);

@@ -7,4 +7,5 @@ routes = (app) => {
   require('./app/controllers/api/v1/block')(app);
   require('./app/controllers/api/v1/unblock')(app);
 }
+
 module.exports = routes;

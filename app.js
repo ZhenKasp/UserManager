@@ -8,17 +8,14 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./app/models/sequelize.js');
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
+  connectionLimit : 100,
   host: process.env.HOST,
   user: process.env.LOGIN,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
 });
 
-connection.connect((err) => {
-  if(err) throw err;
-  console.log("DB Connected Successfully");
-});
 
 connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
   if (err) throw err;
@@ -26,7 +23,7 @@ connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.CORS,
   credentials : true
  }));
 
